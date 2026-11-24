@@ -1189,7 +1189,7 @@ html.ms-lock{overscroll-behavior:none}
 <main>
 <section class="view" id="v-home" data-v="home"><div class="home-a">
 <section class="a-hero" data-hero>
-  <div class="hero-media" data-slides><img class="slide on" src="img/harvard-widener-dusk-m.jpg" srcset="img/harvard-widener-dusk-m.jpg 1100w, img/harvard-widener-dusk.jpg 2400w" sizes="100vw" alt="Widener Library at Harvard University, lit at dusk in the snow" data-cap-en="Widener Library, Harvard University" data-cap-ko="하버드 대학교 와이드너 도서관" fetchpriority="high" decoding="async"><img class="slide" src="img/yale-harkness-m.jpg" srcset="img/yale-harkness-m.jpg 1100w, img/yale-harkness.jpg 2400w" sizes="100vw" alt="Harkness Tower at Yale University framed by trees" data-cap-en="Harkness Tower, Yale University" data-cap-ko="예일 대학교 하크니스 타워" loading="lazy" decoding="async"><img class="slide" src="img/princeton-blair-m.jpg" srcset="img/princeton-blair-m.jpg 1100w, img/princeton-blair.jpg 2400w" sizes="100vw" alt="Blair Arch at Princeton University" data-cap-en="Blair Arch, Princeton University" data-cap-ko="프린스턴 대학교 블레어 아치" loading="lazy" decoding="async"></div><div class="a-video" aria-hidden="true"><video muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" data-src="media/hero.mp4" data-src-m="media/hero-m.mp4" data-poster="media/hero-poster.jpg" data-cuts="[[0, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;], [3.396, &quot;Harvard University&quot;, &quot;하버드 대학교&quot;], [7.021, &quot;Princeton University&quot;, &quot;프린스턴 대학교&quot;], [10.646, &quot;Columbia University&quot;, &quot;컬럼비아 대학교&quot;], [14.271, &quot;Yale University&quot;, &quot;예일 대학교&quot;], [17.896, &quot;Brown University&quot;, &quot;브라운 대학교&quot;], [21.521, &quot;Dartmouth College&quot;, &quot;다트머스 대학&quot;], [25.146, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;]]"></video></div>
+  <div class="hero-media" data-slides><img class="slide on" src="img/harvard-widener-dusk-m.jpg" srcset="img/harvard-widener-dusk-m.jpg 1100w, img/harvard-widener-dusk.jpg 2400w" sizes="100vw" alt="Widener Library at Harvard University, lit at dusk in the snow" data-cap-en="Widener Library, Harvard University" data-cap-ko="하버드 대학교 와이드너 도서관" fetchpriority="high" decoding="async"><img class="slide" src="img/yale-harkness-m.jpg" srcset="img/yale-harkness-m.jpg 1100w, img/yale-harkness.jpg 2400w" sizes="100vw" alt="Harkness Tower at Yale University framed by trees" data-cap-en="Harkness Tower, Yale University" data-cap-ko="예일 대학교 하크니스 타워" loading="lazy" decoding="async"><img class="slide" src="img/princeton-blair-m.jpg" srcset="img/princeton-blair-m.jpg 1100w, img/princeton-blair.jpg 2400w" sizes="100vw" alt="Blair Arch at Princeton University" data-cap-en="Blair Arch, Princeton University" data-cap-ko="프린스턴 대학교 블레어 아치" loading="lazy" decoding="async"></div><div class="a-video" aria-hidden="true"><video muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" data-src="media/hero.mp4" data-src-m="media/hero-m.mp4" data-src-v="media/hero-v.mp4" data-poster="media/hero-poster.jpg" data-poster-v="media/hero-v-poster.jpg" data-cuts="[[0, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;], [3.396, &quot;Harvard University&quot;, &quot;하버드 대학교&quot;], [7.021, &quot;Princeton University&quot;, &quot;프린스턴 대학교&quot;], [10.646, &quot;Columbia University&quot;, &quot;컬럼비아 대학교&quot;], [14.271, &quot;Yale University&quot;, &quot;예일 대학교&quot;], [17.896, &quot;Brown University&quot;, &quot;브라운 대학교&quot;], [21.521, &quot;Dartmouth College&quot;, &quot;다트머스 대학&quot;], [25.146, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;]]"></video></div>
   <div class="wrap a-hero-in">
     <p class="eyebrow rise"><span class="en">Cypress, California · Since 2003</span><span class="ko">캘리포니아 사이프러스 · Since 2003</span></p>
     <h1 class="rise d1">Your Path to College Starts Here.</h1>
@@ -1810,7 +1810,10 @@ function MSFX(app) {
    Everything waits for #app[data-video]: the other concepts never fetch the video and keep their photos, and A-3-2
    fetches it only once the home page shows (a visitor who lands on another page and stays there does not download it).
    Reduced motion: no intro and no playback, the poster stands still. ?intro=off: no intro. Esc, a click or a tap skips it;
-   a Tab into the page ends it at once. */
+   a Tab into the page ends it at once.
+   Three files share one timeline (frames, cuts, fades): an upright cut for a narrow screen held upright, 720p for a narrow
+   screen held sideways, 1080p above 860px. The poster follows the same rule, and turning the phone swaps the file at the
+   same moment of the loop (once the intro is over, if one is running). */
 function MSVIDEO(app, opt) {
   var box = app.querySelector('.home-a .a-video'), vid = box && box.querySelector('video');
   if (!box || !vid) return null;
@@ -1830,20 +1833,63 @@ function MSVIDEO(app, opt) {
   }
 
   /* ---- the video ---- */
+  /* Which file: a narrow screen held upright gets the upright cut (608×1080, each campus framed on its landmark), a narrow
+     screen held sideways the 720p file, anything wider the 1080p file. The poster follows the same rule, so the still that
+     reduced motion, a refused autoplay or a slow network leave on screen fits the screen's shape as well. */
+  var MQ = '(max-width:860px)', MQV = MQ + ' and (orientation: portrait)';
+  var kind = '', pend = false, back = null, turnT = 0;
+  function which() { return win.matchMedia(MQV).matches ? 'v' : win.matchMedia(MQ).matches ? 'm' : ''; }
+  function srcOf(k) { return (k === 'v' && vid.getAttribute('data-src-v')) || (k && vid.getAttribute('data-src-m')) || vid.getAttribute('data-src'); }
+  function posterOf(k) { return (k === 'v' && vid.getAttribute('data-poster-v')) || vid.getAttribute('data-poster'); }
   function prime() {   // A-3-2 chosen: the element's settings, no file yet
     if (primed) return;
     primed = true;
     vid.muted = true; vid.defaultMuted = true; vid.loop = true; vid.playsInline = true;
     vid.addEventListener('timeupdate', caption);
+    vid.addEventListener('loadedmetadata', guard(resume));
+    vid.addEventListener('error', function () { back = null; });
+    [MQ, MQV].forEach(function (q) {
+      var m = win.matchMedia(q);
+      if (m.addEventListener) m.addEventListener('change', onTurn); else if (m.addListener) m.addListener(onTurn);
+    });
   }
   function load() {    // the first time the home page shows: the poster, then the file. A visit that stays on the other pages fetches neither.
     if (loaded) return;
     loaded = true;
-    vid.poster = vid.getAttribute('data-poster');
+    kind = which();
+    vid.poster = posterOf(kind);
     if (reduce) return;   // the poster stands still and the file is never fetched
     vid.autoplay = true;
     vid.preload = 'auto';
-    vid.src = vid.getAttribute(win.matchMedia('(max-width:860px)').matches ? 'data-src-m' : 'data-src');
+    vid.src = srcOf(kind);
+  }
+  /* The phone turned, or the window crossed 860px: the file for the new shape takes over at the moment the old one had
+     reached, playing if it was playing. While the intro runs the change waits for its end (stop()); while the video is out
+     of sight (another concept, another page) it waits until the home page shows again (sync()). */
+  function onTurn() { clearTimeout(turnT); turnT = setTimeout(guard(fit), 200); }   // a turn fires several resizes: act once it has settled
+  function fit() {
+    if (!loaded || which() === kind) { pend = false; return; }
+    if (state || !active() || !home()) { pend = true; return; }
+    pend = false;
+    swap();
+  }
+  function swap() {
+    var s;
+    kind = which();
+    vid.poster = posterOf(kind);
+    s = srcOf(kind);
+    if (reduce || vid.getAttribute('src') === s) return;   // reduced motion: only the still, no file was ever fetched
+    if (!back) back = { t: vid.currentTime || 0, run: !vid.paused };   // a second turn before the new file is ready keeps the first moment
+    vid.autoplay = false;   // resume() starts it, at that moment
+    vid.src = s;
+  }
+  function resume() {  // the swapped-in file knows its length: go to the moment, then play on
+    var b = back;
+    back = null;
+    if (!b) return;
+    try { if (b.t > 0.05 && b.t < (vid.duration || 0)) vid.currentTime = b.t; } catch (e) { /* not seekable: it plays from the start */ }
+    capK = -1; caption(true);
+    if (b.run && active() && home()) play();
   }
   function play() {
     if (reduce || !vid.paused) return;
@@ -1867,7 +1913,7 @@ function MSVIDEO(app, opt) {
   /* ---- the line at the foot of the first screen names the campus on screen, as it named the photo before ---- */
   function cutAt(t) { var k = 0; for (var i = 1; i < cuts.length; i++) if (t >= cuts[i][0]) k = i; return k; }
   function caption(force) {
-    if (!active() || !cuts.length) return;
+    if (!active() || !cuts.length || (back && force !== true)) return;   // back: a swapped-in file, not at its moment yet
     var k = cutAt(vid.currentTime || 0), out;
     if (k === capK && force !== true) return;
     capK = k;
@@ -1896,6 +1942,7 @@ function MSVIDEO(app, opt) {
     r = hero.getBoundingClientRect();
     box.style.bottom = Math.min(0, win.innerHeight - r.bottom) + 'px';
     try { if (vid.readyState > 0 && vid.currentTime > 0.05) vid.currentTime = 0; } catch (e) { /* not seekable yet: it is at the start anyway */ }
+    if (back) back.t = 0;   // a file swapped in just before starts from its first frame too
     capK = -1; caption(true);
     listen(true);
     later(settle, HOLD);
@@ -1931,6 +1978,7 @@ function MSVIDEO(app, opt) {
     if (!box.getAttribute('style')) box.removeAttribute('style');
     anims.forEach(function (a) { try { a.cancel(); } catch (e) { /* already gone */ } });
     anims = [];
+    if (pend) fit();   // the phone turned during the intro: its file changes now
   }
   function skip() { if (state === 1) settle(true); else if (state === 2) stop(); }
 
@@ -1970,7 +2018,10 @@ function MSVIDEO(app, opt) {
     prime();
     if (!home()) { stop(); hold(); return; }
     load();
-    if (why === 'open' || why === 'pick') { stop(); start(); }
+    var intro = why === 'open' || why === 'pick';
+    if (intro) stop();
+    fit();   // the phone turned while the video was out of sight
+    if (intro) start();
     caption(true);
     play();
   }
