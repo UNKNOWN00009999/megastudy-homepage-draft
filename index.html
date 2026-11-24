@@ -892,6 +892,11 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 #app[data-video] .home-a .hero-media{display:none}
 #app[data-video] .home-a .a-video{display:block;position:absolute;inset:0;z-index:-2;overflow:hidden;background:var(--ink-a)}
 .a-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+/* The upright cut (video.js sets data-upright while it shows hero-v or its poster). A frame wider than the cut (608:1080),
+   such as a tablet held upright, crops it top and bottom; there it sits 15% from the top so every landmark's top stays in
+   (Brown's finial, the highest, is row 94 of 1080; the 834×669 frame starts at row 89). Phones crop only the sides, so
+   nothing moves there. */
+.a-video video[data-upright]{object-position:50% 15%}
 /* legibility over the bright cuts (Columbia, Brown, Cornell): still no veil over the picture. A faint pool sits behind
    the text block only (centre .38, gone at the ellipse edge), with light strips behind the menu row and the caption,
    and the text shadows are stronger than A-3's. Measured on eight frames, see the 시안 5차 note in the vault. */
@@ -1841,6 +1846,7 @@ function MSVIDEO(app, opt) {
   function which() { return win.matchMedia(MQV).matches ? 'v' : win.matchMedia(MQ).matches ? 'm' : ''; }
   function srcOf(k) { return (k === 'v' && vid.getAttribute('data-src-v')) || (k && vid.getAttribute('data-src-m')) || vid.getAttribute('data-src'); }
   function posterOf(k) { return (k === 'v' && vid.getAttribute('data-poster-v')) || vid.getAttribute('data-poster'); }
+  function mark() { if (kind === 'v') vid.setAttribute('data-upright', ''); else vid.removeAttribute('data-upright'); }   // site.css anchors the upright cut near its top
   function prime() {   // A-3-2 chosen: the element's settings, no file yet
     if (primed) return;
     primed = true;
@@ -1857,6 +1863,7 @@ function MSVIDEO(app, opt) {
     if (loaded) return;
     loaded = true;
     kind = which();
+    mark();
     vid.poster = posterOf(kind);
     if (reduce) return;   // the poster stands still and the file is never fetched
     vid.autoplay = true;
@@ -1876,6 +1883,7 @@ function MSVIDEO(app, opt) {
   function swap() {
     var s;
     kind = which();
+    mark();
     vid.poster = posterOf(kind);
     s = srcOf(kind);
     if (reduce || vid.getAttribute('src') === s) return;   // reduced motion: only the still, no file was ever fetched
