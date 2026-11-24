@@ -760,13 +760,18 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
    "[data-concept="a"][data-variant="2"] " / "[data-concept="a"][data-variant="3"] " / "[data-concept="b"][data-variant="2"] " / "[data-concept="b"][data-variant="3"] " / "[data-concept="c"][data-variant="2"] " are expanded by build.py to [data-concept="x"][data-variant="n"] descendant selectors.
    ===================================================================== */
 
-/* ---------- draft bar with eight buttons: descriptions go first, then the sentence, then the label, so the bar stays on one row ---------- */
+/* ---------- draft bar with ten buttons (A-3-2 added 2026-11-25): one row at every width from 320px up, 48.9px tall as before.
+   As the window narrows, what gives way: the sentence, the button descriptions, "Draft preview ·", the label, then the buttons'
+   side padding. Widths are measured: labels 550.6px with descriptions, 190.6px without; sentence 366.3px (en), 357.2px (ko). ---------- */
+@media (min-width:1101px){#app .seg button{padding-inline:10px}}
+@media (max-width:1239px) and (min-width:1101px),(max-width:939px){.draftbar .what>.en,.draftbar .what>.ko{display:none}}
 @media (max-width:1100px){.seg button i{display:none}}
 @media (max-width:820px){.draftbar .what span{display:none}.draftbar .what{white-space:nowrap}.draftbar .in{flex-wrap:nowrap}}
 @media (max-width:640px){#app .seg button{padding:7px 8px;min-width:34px}}
-@media (max-width:480px){.draftbar .what{display:none}.draftbar .in{justify-content:center}}
-@media (max-width:400px){#app .seg button{padding:7px 7px;min-width:32px}}
-@media (max-width:350px){#app .seg button{padding:7px 3px;min-width:27px}}   /* 버튼이 아홉 개가 된 뒤 320 폭에서도 한 줄에 들어가게 */
+@media (max-width:580px){.draftbar .what{display:none}.draftbar .in{justify-content:center}}
+@media (max-width:480px){.draftbar .wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))} #app .seg button{padding:7px 5px;min-width:28px}}
+@media (max-width:400px){#app .seg button{padding:7px 3px;min-width:24px}}
+@media (max-width:350px){.draftbar .wrap{padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))} .seg{gap:2px} #app .seg button{padding:7px 2px;min-width:23px}}
 
 /* ---------- fix 1: the language switch stays reachable once the header sticks ---------- */
 /* Wide windows: the utility row stays with the menu row. (In English the menu row has 26–34px to spare, not enough for another button.) */
@@ -877,6 +882,51 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 #app[data-concept="a"][data-clean][data-view="home"]:not(.scrolled) .hd-main .nav a{text-shadow:0 0 2px rgba(9,11,18,.90),0 1px 3px rgba(9,11,18,.80),0 0 10px rgba(9,11,18,.45)}
 #app[data-concept="a"][data-clean][data-view="home"]:not(.scrolled) .hd-main .logo-w{filter:drop-shadow(0 1px 2px rgba(9,11,18,.65)) drop-shadow(0 0 8px rgba(9,11,18,.30))}
 #app[data-concept="a"][data-clean][data-view="home"]:not(.scrolled) .hd-main .menu-btn{filter:drop-shadow(0 1px 2px rgba(9,11,18,.7))}
+
+/* A-3-2 — Video (2026-11-25 대표님 «A-3 Clean 버젼에서 A-3-2 버젼으로»): A-3 as it is; only the home page's first screen
+   plays the campus video in place of the photos. site.js adds data-video to A-3's data-variant="2" and data-clean,
+   and video.js gives the <video> its file only then. Every other concept keeps the .a-video box and the video's
+   words (.pre-v caption prefix, .cr-v credit lines, .cr-pv notice) out of the page, so they look exactly as before. */
+.a-video{display:none}
+#app:not([data-video]) .pre-v,#app:not([data-video]) .cr-v,#app:not([data-video]) .cr-pv,#app[data-video] .pre-ab,#app[data-video] .cr-p{display:none}
+#app[data-video] .home-a .hero-media{display:none}
+#app[data-video] .home-a .a-video{display:block;position:absolute;inset:0;z-index:-2;overflow:hidden;background:var(--ink-a)}
+.a-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+/* legibility over the bright cuts (Columbia, Brown, Cornell): still no veil over the picture. A faint pool sits behind
+   the text block only (centre .38, gone at the ellipse edge), with light strips behind the menu row and the caption,
+   and the text shadows are stronger than A-3's. Measured on eight frames, see the 시안 5차 note in the vault. */
+#app[data-concept="a"][data-video] .a-hero::before{content:"";transition:opacity .9s ease;background:
+  linear-gradient(180deg,rgba(9,11,18,.40) 0,rgba(9,11,18,.22) 90px,rgba(9,11,18,0) 170px),
+  radial-gradient(ellipse 48% 60% at 25% 48%,rgba(9,11,18,.38) 0%,rgba(9,11,18,.26) 55%,rgba(9,11,18,0) 100%),
+  linear-gradient(0deg,rgba(9,11,18,.40) 0,rgba(9,11,18,0) 120px)}
+#app[data-concept="a"][data-video] .a-hero h1{text-shadow:0 0 2px rgba(9,11,18,.65),0 2px 4px rgba(9,11,18,.65),0 3px 24px rgba(9,11,18,.55)}
+#app[data-concept="a"][data-video] .a-hero .sub,#app[data-concept="a"][data-video] .a-hero .cap{text-shadow:0 0 2px rgba(9,11,18,1),0 1px 3px rgba(9,11,18,.95),0 1px 16px rgba(9,11,18,.75)}
+#app[data-concept="a"][data-video] .a-hero .body{text-shadow:0 0 1px rgba(9,11,18,1),0 0 2px rgba(9,11,18,1),0 1px 4px rgba(9,11,18,.95),0 1px 16px rgba(9,11,18,.8)}
+#app[data-concept="a"][data-video] .a-hero .eyebrow{text-shadow:0 0 1px rgba(9,11,18,1),0 0 2px rgba(9,11,18,1),0 0 4px rgba(9,11,18,1),0 1px 6px rgba(9,11,18,.9),0 0 16px rgba(9,11,18,.8)}
+#app[data-concept="a"][data-video][data-view="home"]:not(.scrolled) .hd-main .nav a{text-shadow:0 0 2px rgba(9,11,18,1),0 1px 3px rgba(9,11,18,.95),0 0 10px rgba(9,11,18,.75)}
+/* the caption line ("Video: …") carries its own small pool, so it follows the caption at every width */
+#app[data-video] .home-a .a-cap .cap{position:relative;width:fit-content}
+#app[data-video] .home-a .a-cap .cap::after{content:"";position:absolute;inset:-28px -56px -28px -40px;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(9,11,18,.46) 0%,rgba(9,11,18,.30) 65%,rgba(9,11,18,0) 100%)}
+@media (max-width:860px){
+  /* phones: the text runs the full width over the middle of the picture, so the pool follows the text block from the top
+     (positions in px from the top of the first screen) */
+  #app[data-concept="a"][data-video] .a-hero::before{background:
+    linear-gradient(180deg,rgba(9,11,18,.40) 0,rgba(9,11,18,.26) 90px,rgba(9,11,18,.10) 160px,rgba(9,11,18,0) 220px),
+    radial-gradient(ellipse 90% 270px at 35% 250px,rgba(9,11,18,.40) 0%,rgba(9,11,18,.28) 55%,rgba(9,11,18,0) 100%)}
+  #app[data-video] .home-a .a-cap .cap::after{inset:-30px -64px -30px -44px;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(9,11,18,.54) 0%,rgba(9,11,18,.36) 65%,rgba(9,11,18,0) 100%)}
+}
+/* the opening intro (video.js sets data-intro): first the video alone over the whole window under the draft bar
+   ("hold", scrolling held by html.ms-lock), then it settles into the first screen's frame while the header and the
+   text come in ("settle"). The first screen sits above the header while the video is alone, under it while it settles.
+   Scrolling is held by video.js (wheel, touch and scroll keys; any scroll that still happens goes back to the top), not
+   by overflow:hidden, so the scrollbar and the page width stay exactly as they are. */
+html.ms-lock{overscroll-behavior:none}
+#app[data-intro] .home-a .a-video{position:fixed;top:calc(env(safe-area-inset-top,0px) + var(--draft-h,49px) - 1px);left:0;right:0;bottom:0}
+#app[data-intro="hold"] .home-a .a-hero{z-index:30}
+#app[data-intro="settle"] .home-a .a-hero{z-index:15}
+#app[data-intro="hold"] .hd,#app[data-intro="hold"] .home-a .a-hero-in,#app[data-intro="hold"] .home-a .a-cap,#app[data-intro="hold"] .home-a .a-hero-card{visibility:hidden}
+#app[data-intro="hold"] .home-a .a-hero::before{opacity:0;transition:none}   /* the video alone; the pool fades in as it settles */
 
 /* header: pale sky utility row over a navy menu row */
 [data-concept="a"][data-variant="3"] .hd-util{background:#D9ECFF;color:#232859;--focus:#1B2A8C}
@@ -1055,7 +1105,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
 /* ---------- 10. page change: the new page's text and photo ease in ---------- */
 #app.fx.fx-nav[data-concept="a"][data-variant="2"] .view .ph-in,#app.fx.fx-nav[data-concept="a"][data-variant="2"] .view .pg>.wrap{animation:fxPage .3s var(--ease) both}
-#app.fx.fx-nav[data-concept="a"][data-variant="2"] .view .ph-img,#app.fx.fx-nav[data-concept="a"][data-variant="2"] .home-a .hero-media{animation:fxFade .45s ease both}
+#app.fx.fx-nav[data-concept="a"][data-variant="2"] .view .ph-img,#app.fx.fx-nav[data-concept="a"][data-variant="2"] .home-a .hero-media,#app.fx.fx-nav[data-concept="a"][data-variant="2"] .home-a .a-video{animation:fxFade .45s ease both}   /* .a-video: A-3-2's first-screen video */
 
 /* ---------- 6 and 9. scroll reveals are Web Animations (anim.js); these only set where they grow from ---------- */
 #app.fx[data-concept="a"][data-variant="2"] .a-intro .stem{transform-origin:50% 0}
@@ -1111,6 +1161,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
     <button type="button" data-concept-btn="a" aria-pressed="true">A<i>Dark</i></button>
     <button type="button" data-concept-btn="a2" aria-pressed="false">A-2<i>Soft</i></button>
     <button type="button" data-concept-btn="a3" aria-pressed="false">A-3<i>Clean</i></button>
+    <button type="button" data-concept-btn="a32" aria-pressed="false">A-3-2<i>Video</i></button>
     <button type="button" data-concept-btn="a4" aria-pressed="false">A-4<i>Navy</i></button>
     <button type="button" data-concept-btn="b" aria-pressed="false">B<i>Bright</i></button>
     <button type="button" data-concept-btn="b2" aria-pressed="false">B-2<i>Light</i></button>
@@ -1138,7 +1189,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <main>
 <section class="view" id="v-home" data-v="home"><div class="home-a">
 <section class="a-hero" data-hero>
-  <div class="hero-media" data-slides><img class="slide on" src="img/harvard-widener-dusk-m.jpg" srcset="img/harvard-widener-dusk-m.jpg 1100w, img/harvard-widener-dusk.jpg 2400w" sizes="100vw" alt="Widener Library at Harvard University, lit at dusk in the snow" data-cap-en="Widener Library, Harvard University" data-cap-ko="하버드 대학교 와이드너 도서관" fetchpriority="high" decoding="async"><img class="slide" src="img/yale-harkness-m.jpg" srcset="img/yale-harkness-m.jpg 1100w, img/yale-harkness.jpg 2400w" sizes="100vw" alt="Harkness Tower at Yale University framed by trees" data-cap-en="Harkness Tower, Yale University" data-cap-ko="예일 대학교 하크니스 타워" loading="lazy" decoding="async"><img class="slide" src="img/princeton-blair-m.jpg" srcset="img/princeton-blair-m.jpg 1100w, img/princeton-blair.jpg 2400w" sizes="100vw" alt="Blair Arch at Princeton University" data-cap-en="Blair Arch, Princeton University" data-cap-ko="프린스턴 대학교 블레어 아치" loading="lazy" decoding="async"></div>
+  <div class="hero-media" data-slides><img class="slide on" src="img/harvard-widener-dusk-m.jpg" srcset="img/harvard-widener-dusk-m.jpg 1100w, img/harvard-widener-dusk.jpg 2400w" sizes="100vw" alt="Widener Library at Harvard University, lit at dusk in the snow" data-cap-en="Widener Library, Harvard University" data-cap-ko="하버드 대학교 와이드너 도서관" fetchpriority="high" decoding="async"><img class="slide" src="img/yale-harkness-m.jpg" srcset="img/yale-harkness-m.jpg 1100w, img/yale-harkness.jpg 2400w" sizes="100vw" alt="Harkness Tower at Yale University framed by trees" data-cap-en="Harkness Tower, Yale University" data-cap-ko="예일 대학교 하크니스 타워" loading="lazy" decoding="async"><img class="slide" src="img/princeton-blair-m.jpg" srcset="img/princeton-blair-m.jpg 1100w, img/princeton-blair.jpg 2400w" sizes="100vw" alt="Blair Arch at Princeton University" data-cap-en="Blair Arch, Princeton University" data-cap-ko="프린스턴 대학교 블레어 아치" loading="lazy" decoding="async"></div><div class="a-video" aria-hidden="true"><video muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" data-src="media/hero.mp4" data-src-m="media/hero-m.mp4" data-poster="media/hero-poster.jpg" data-cuts="[[0, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;], [3.396, &quot;Harvard University&quot;, &quot;하버드 대학교&quot;], [7.021, &quot;Princeton University&quot;, &quot;프린스턴 대학교&quot;], [10.646, &quot;Columbia University&quot;, &quot;컬럼비아 대학교&quot;], [14.271, &quot;Yale University&quot;, &quot;예일 대학교&quot;], [17.896, &quot;Brown University&quot;, &quot;브라운 대학교&quot;], [21.521, &quot;Dartmouth College&quot;, &quot;다트머스 대학&quot;], [25.146, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;]]"></video></div>
   <div class="wrap a-hero-in">
     <p class="eyebrow rise"><span class="en">Cypress, California · Since 2003</span><span class="ko">캘리포니아 사이프러스 · Since 2003</span></p>
     <h1 class="rise d1">Your Path to College Starts Here.</h1>
@@ -1146,7 +1197,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
     <p class="body rise d3"><span class="en">English, Math, Test Prep, and College Consulting, all in one place.</span><span class="ko">영어, 수학, 각종 시험 준비와 대입컨설팅까지 한곳에서 완성합니다.</span></p>
     <div class="btns rise d4"><a class="btn" href="#v-placement" data-go="placement"><span class="en">Request a Placement Test</span><span class="ko">레벨테스트 신청</span><svg class="arr" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 12h17M14 6l6 6-6 6"/></svg></a><a class="btn alt" href="#v-programs" data-go="programs"><span class="en">See Programs</span><span class="ko">프로그램 보기</span></a></div>
   </div>
-  <div class="a-cap"><div class="wrap"><p class="cap"><i></i><span><span class="pre-ab"><span class="en">Photo: </span><span class="ko">사진: </span></span><span class="pre-c"><span class="en">Pictured: </span><span class="ko">사진: </span></span><span data-cap-out>Widener Library, Harvard University</span></span></p></div></div>
+  <div class="a-cap"><div class="wrap"><p class="cap"><i></i><span><span class="pre-ab"><span class="en">Photo: </span><span class="ko">사진: </span></span><span class="pre-c"><span class="en">Pictured: </span><span class="ko">사진: </span></span><span class="pre-v"><span class="en">Video: </span><span class="ko">영상: </span></span><span data-cap-out>Widener Library, Harvard University</span></span></p></div></div>
   <aside class="a-hero-card">
     <p class="k"><span class="en">Placement Test &amp; Consultation</span><span class="ko">레벨테스트·상담</span></p>
     <p class="h"><span class="en">Our placement test shows where your child should start and how to prepare.</span><span class="ko">레벨테스트로 무엇을, 어떻게 시작하고 준비해야 하는지 확인합니다.</span></p>
@@ -1332,8 +1383,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 </div>
 <div class="ft-bot">
   <p>© <span class="en">Megastudy Academy</span><span class="ko">메가스터디 아카데미</span> · 5721 Lincoln Ave., Suite G, Cypress, CA 90630 · <a class="nw" href="tel:+17147615656">(714) 761-5656</a></p>
-  <p><span class="en">Campus photographs are shown for illustration. Megastudy Academy is not affiliated with or endorsed by the universities pictured.</span><span class="ko">캠퍼스 사진은 이해를 돕기 위한 것입니다. 메가스터디 아카데미는 사진 속 대학과 제휴하거나 그 대학의 보증을 받은 기관이 아닙니다.</span></p>
-  <details class="credits"><summary><span class="en">Photo credits</span><span class="ko">사진 출처</span></summary><ul><li>Widener Library, Harvard University: Chris Rycroft, CC BY 2.0, <a href="https://commons.wikimedia.org/wiki/File:Widener_Library_in_Harvard_Yard_during_a_snowstorm_(51306825311).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Harkness Tower, Yale University: Carol M. Highsmith, Public domain, <a href="https://commons.wikimedia.org/wiki/File:Harkness_Tower_Canopy_Highsmith.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Blair Arch, Princeton University: ajay_suresh, CC BY 4.0, <a href="https://commons.wikimedia.org/wiki/File:Blair_Arch_-_Princeton_University_(55144762843).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Nassau Hall, Princeton University: ajay_suresh, CC BY 4.0, <a href="https://commons.wikimedia.org/wiki/File:Nassau_Hall_-_Princeton_University_(55144981395).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Widener Library, Harvard University: Kenneth C. Zirkel, CC BY 4.0, <a href="https://commons.wikimedia.org/wiki/File:Widener_Library,_Harvard_University.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Baker Library, Dartmouth College: Kane5187, Public domain, <a href="https://commons.wikimedia.org/wiki/File:Dartmouth_College_campus_2007-06-23_Baker_Memorial_Library_01.JPG" target="_blank" rel="noopener">Wikimedia Commons</a></li></ul></details>
+  <p><span class="cr-p"><span class="en">Campus photographs are shown for illustration. Megastudy Academy is not affiliated with or endorsed by the universities pictured.</span><span class="ko">캠퍼스 사진은 이해를 돕기 위한 것입니다. 메가스터디 아카데미는 사진 속 대학과 제휴하거나 그 대학의 보증을 받은 기관이 아닙니다.</span></span><span class="cr-pv"><span class="en">Campus photographs and video are shown for illustration. Megastudy Academy is not affiliated with or endorsed by the universities pictured.</span><span class="ko">캠퍼스 사진과 영상은 이해를 돕기 위한 것입니다. 메가스터디 아카데미는 사진·영상 속 대학과 제휴하거나 그 대학의 보증을 받은 기관이 아닙니다.</span></span></p>
+  <details class="credits"><summary><span class="cr-p"><span class="en">Photo credits</span><span class="ko">사진 출처</span></span><span class="cr-pv"><span class="en">Photo &amp; video credits</span><span class="ko">사진·영상 출처</span></span></summary><ul><li>Widener Library, Harvard University: Chris Rycroft, CC BY 2.0, <a href="https://commons.wikimedia.org/wiki/File:Widener_Library_in_Harvard_Yard_during_a_snowstorm_(51306825311).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Harkness Tower, Yale University: Carol M. Highsmith, Public domain, <a href="https://commons.wikimedia.org/wiki/File:Harkness_Tower_Canopy_Highsmith.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Blair Arch, Princeton University: ajay_suresh, CC BY 4.0, <a href="https://commons.wikimedia.org/wiki/File:Blair_Arch_-_Princeton_University_(55144762843).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Nassau Hall, Princeton University: ajay_suresh, CC BY 4.0, <a href="https://commons.wikimedia.org/wiki/File:Nassau_Hall_-_Princeton_University_(55144981395).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Widener Library, Harvard University: Kenneth C. Zirkel, CC BY 4.0, <a href="https://commons.wikimedia.org/wiki/File:Widener_Library,_Harvard_University.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Baker Library, Dartmouth College: Kane5187, Public domain, <a href="https://commons.wikimedia.org/wiki/File:Dartmouth_College_campus_2007-06-23_Baker_Memorial_Library_01.JPG" target="_blank" rel="noopener">Wikimedia Commons</a></li><li class="cr-v cr-vh"><span class="en">First-screen video, edited from these sources:</span><span class="ko">첫 화면 영상(아래 자료를 편집해 만들었습니다):</span></li><li class="cr-v"><span class="en">Cornell University</span><span class="ko">코넬 대학교</span>: “Cornell University. Ithaca, NY”<span class="en"> by </span><span class="ko">, </span>JohnFilms Production, <a href="https://www.youtube.com/watch?v=6n9C5sN081g" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v"><span class="en">Harvard University</span><span class="ko">하버드 대학교</span>: “哈佛大学校园第一人称 Harvard University campus POV”<span class="en"> by </span><span class="ko">, </span>howchou, <a href="https://www.youtube.com/watch?v=zTm07p-lGyk" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v"><span class="en">Princeton University</span><span class="ko">프린스턴 대학교</span>: “Inside Princeton: America's Most Beautiful College Town”<span class="en"> by </span><span class="ko">, </span>Bogdan and Nastya, <a href="https://www.youtube.com/watch?v=TG8GNt_kUQU" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v"><span class="en">Columbia University</span><span class="ko">컬럼비아 대학교</span>: “Low Angle Shot of University Campus”<span class="en"> by </span><span class="ko">, </span>Armin Rimoldi, <a href="https://www.pexels.com/video/5551777/" target="_blank" rel="noopener">Pexels</a>, <a href="https://www.pexels.com/license/" target="_blank" rel="noopener">Pexels License</a></li><li class="cr-v"><span class="en">Yale University</span><span class="ko">예일 대학교</span>: “Divine bird in Divinity School - Yale University / New Haven CT Aerial Drone”<span class="en"> by </span><span class="ko">, </span>Gabriel M. M. Mendes, <a href="https://www.youtube.com/watch?v=YBJclx4ZjsM" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v"><span class="en">Brown University (still photo)</span><span class="ko">브라운 대학교(사진)</span>: “Brown University - Main Campus 02”<span class="en"> by </span><span class="ko">, </span>P. Hughes, <a href="https://commons.wikimedia.org/wiki/File:Brown_University_-_Main_Campus_02.jpg" target="_blank" rel="noopener">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></li><li class="cr-v"><span class="en">Dartmouth College</span><span class="ko">다트머스 대학</span>: “Dartmouth College Baker Tower aerial”<span class="en"> by </span><span class="ko">, </span>Jared, <a href="https://www.youtube.com/watch?v=aUlinI6EPlg" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v"><span class="en">Changes: the clips were trimmed, cropped and joined, and their speed, framing, camera shake and color were adjusted. The Brown University photo was cropped, softened with light grain and given a slow zoom.</span><span class="ko">고친 내용: 영상을 잘라 이어 붙이고 화면 범위·속도·흔들림·색을 손봤습니다. 브라운 대학교 사진은 잘라 내고 살짝 흐리게 하고 옅은 입자감을 더한 뒤 천천히 확대되게 만들었습니다.</span></li></ul></details>
 </div>
 </div></footer>
 </div>
@@ -1647,7 +1698,8 @@ function MSFX(app) {
 
   /* ---- 7. the first-screen headline comes in word by word, the first time the home page is seen ---- */
   function words() {
-    if (wordsDone || view() !== 'home') return;
+    // A-3-2: while its intro shows the video alone, the headline is out of sight; video.js asks for the entrance later (heading)
+    if (wordsDone || view() !== 'home' || app.getAttribute('data-intro') === 'hold') return;
     var h = app.querySelector('.home-a .a-hero h1'), text, parts;
     if (!shown(h) || h.children.length) return;
     wordsDone = true;
@@ -1735,7 +1787,196 @@ function MSFX(app) {
     scroll: guard(function () { if (!on) return; scrollDirty = true; kick(); clearTimeout(restT); restT = setTimeout(guard(rest), 320); }),
     resize: guard(function () { if (!on) return; inkSetup(); settle(); }),
     lang: guard(settle),
-    swap: guard(swap)
+    swap: guard(swap),
+    /* video.js (A-3-2) at the end of its intro: true when the headline is now coming in word by word.
+       play === false (the intro was skipped) uses the entrance up without playing it, so it does not turn up later instead. */
+    heading: function (play) {
+      try {
+        if (!on || wordsDone) return false;
+        if (play === false) { wordsDone = true; return false; }
+        words();
+        return wordsDone;
+      } catch (e) { try { disable(); } catch (e2) { on = false; } return false; }
+    }
+  };
+}
+
+/* A-3-2 (Video, 2026-11-25): the home page's first screen plays a looping campus video in place of the photo slides.
+   It opens with a short intro when the page is first opened and each time A-3-2 is chosen in the draft bar, home page only:
+   about 3 s of video alone over the whole window under the draft bar, with scrolling held; then in about 1.1 s the video
+   settles into the first screen's own frame while the header, the headline and the buttons come in, and scrolling is let go.
+   The same <video> element plays from the first frame of the intro onwards, so the picture never restarts on the way.
+   site.js calls MSVIDEO(app, options) once, then sync() when the concept or the page changes and lang() for the language.
+   Everything waits for #app[data-video]: the other concepts never fetch the video and keep their photos, and A-3-2
+   fetches it only once the home page shows (a visitor who lands on another page and stays there does not download it).
+   Reduced motion: no intro and no playback, the poster stands still. ?intro=off: no intro. Esc, a click or a tap skips it;
+   a Tab into the page ends it at once. */
+function MSVIDEO(app, opt) {
+  var box = app.querySelector('.home-a .a-video'), vid = box && box.querySelector('video');
+  if (!box || !vid) return null;
+  var doc = document, win = window, root = doc.documentElement;
+  var HOLD = 3000, SETTLE = 1100, EASE = 'cubic-bezier(.16,1,.3,1)';
+  var reduce = !!opt.reduce, introOff = /[?&]intro=off\b/.test(location.search);
+  var KEYS = [' ', 'Spacebar', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End'];
+  var cuts = [], primed = false, loaded = false, state = 0, timers = [], anims = [], capK = -1, retrying = false;
+  try { cuts = JSON.parse(vid.getAttribute('data-cuts') || '[]'); } catch (e) { cuts = []; }
+
+  function active() { return app.hasAttribute('data-video'); }
+  function home() { return (app.dataset.view || 'home') === 'home'; }
+  function guard(f) { return function (a) { try { f(a); } catch (e) { try { stop(); } catch (e2) { /* nothing left to undo */ } } }; }
+  function later(f, ms) {
+    var id = setTimeout(function () { var i = timers.indexOf(id); if (i >= 0) timers.splice(i, 1); guard(f)(); }, ms);
+    timers.push(id);
+  }
+
+  /* ---- the video ---- */
+  function prime() {   // A-3-2 chosen: the element's settings, no file yet
+    if (primed) return;
+    primed = true;
+    vid.muted = true; vid.defaultMuted = true; vid.loop = true; vid.playsInline = true;
+    vid.addEventListener('timeupdate', caption);
+  }
+  function load() {    // the first time the home page shows: the poster, then the file. A visit that stays on the other pages fetches neither.
+    if (loaded) return;
+    loaded = true;
+    vid.poster = vid.getAttribute('data-poster');
+    if (reduce) return;   // the poster stands still and the file is never fetched
+    vid.autoplay = true;
+    vid.preload = 'auto';
+    vid.src = vid.getAttribute(win.matchMedia('(max-width:860px)').matches ? 'data-src-m' : 'data-src');
+  }
+  function play() {
+    if (reduce || !vid.paused) return;
+    var p;
+    try { p = vid.play(); } catch (e) { blocked(e); return; }
+    if (p && p.catch) p.catch(blocked);
+  }
+  function hold() { if (!vid.paused) vid.pause(); }
+  /* Autoplay refused (a power saver, a strict setting): the poster stays, and the next tap or key tries once more. */
+  function blocked(e) {
+    if (retrying || (e && e.name === 'AbortError')) return;   // AbortError: a pause() came first, nothing was refused
+    retrying = true;
+    function again() {
+      doc.removeEventListener('pointerdown', again, true); doc.removeEventListener('keydown', again, true);
+      retrying = false;
+      if (active() && home()) play();
+    }
+    doc.addEventListener('pointerdown', again, true); doc.addEventListener('keydown', again, true);
+  }
+
+  /* ---- the line at the foot of the first screen names the campus on screen, as it named the photo before ---- */
+  function cutAt(t) { var k = 0; for (var i = 1; i < cuts.length; i++) if (t >= cuts[i][0]) k = i; return k; }
+  function caption(force) {
+    if (!active() || !cuts.length) return;
+    var k = cutAt(vid.currentTime || 0), out;
+    if (k === capK && force !== true) return;
+    capK = k;
+    out = app.querySelector('.home-a [data-cap-out]');
+    if (out) out.textContent = cuts[k][app.dataset.lang === 'ko' ? 2 : 1];
+  }
+
+  /* ---- the intro ---- */
+  function run(el, keys, dur, delay, fill) {
+    if (!el || typeof el.animate !== 'function') return;
+    try { anims.push(el.animate(keys, { duration: dur, delay: delay, easing: EASE, fill: fill })); } catch (e) { /* no Web Animations: the step just happens */ }
+  }
+  function up(el, delay, dur, dy) {
+    if (!el || !el.getClientRects().length) return;
+    run(el, [{ opacity: 0, transform: 'translate3d(0,' + dy + 'px,0)' }, { opacity: 1, transform: 'none' }], dur, delay, 'backwards');
+  }
+  function start() {
+    var hero = app.querySelector('.home-a .a-hero'), r;
+    if (reduce || introOff || doc.hidden || !hero) return false;
+    state = 1;
+    if (win.pageYOffset) win.scrollTo(0, 0);
+    root.classList.add('ms-lock');
+    app.setAttribute('data-intro', 'hold');
+    /* The frame covers the window under the draft bar. Where the first screen runs on below the window (phones), the frame
+       runs on with it, so on its way into place the picture only eases back a little instead of growing. */
+    r = hero.getBoundingClientRect();
+    box.style.bottom = Math.min(0, win.innerHeight - r.bottom) + 'px';
+    try { if (vid.readyState > 0 && vid.currentTime > 0.05) vid.currentTime = 0; } catch (e) { /* not seekable yet: it is at the start anyway */ }
+    capK = -1; caption(true);
+    listen(true);
+    later(settle, HOLD);
+    later(stop, HOLD + SETTLE + 2200);   // backstop: nothing can keep the page held
+    return true;
+  }
+  /* fast: a skip during the first 3 s, so the same steps run in under half the time */
+  function settle(fast) {
+    if (state !== 1) return;
+    state = 2;
+    var k = fast === true ? 0.45 : 1, hero = app.querySelector('.home-a .a-hero'), r = hero.getBoundingClientRect();
+    var W = root.clientWidth, H = win.innerHeight, cs = getComputedStyle(box), words;
+    var from = { top: cs.top, bottom: cs.bottom, left: cs.left, right: cs.right };   // the frame as it stands (stylesheet and start())
+    app.setAttribute('data-intro', 'settle');
+    run(box, [from, { top: r.top + 'px', bottom: (H - r.bottom) + 'px', left: r.left + 'px', right: (W - r.right) + 'px' }], SETTLE * k, 0, 'both');
+    words = opt.heading ? opt.heading(k === 1) : false;   // the motion layer's word-by-word headline, if it has not been used yet
+    up(app.querySelector('.hd'), 0, 520 * k, -10);
+    Array.prototype.forEach.call(app.querySelectorAll('.home-a .a-hero-in>*'), function (el, i) {
+      if (!(words && el.tagName === 'H1')) up(el, (140 + i * 90) * k, 700 * k, 22);
+    });
+    up(app.querySelector('.home-a .a-hero-card'), 520 * k, 700 * k, 24);
+    up(app.querySelector('.home-a .a-cap'), 600 * k, 600 * k, 0);
+    later(stop, SETTLE * k + 200);
+  }
+  function stop() {
+    timers.forEach(clearTimeout); timers = [];
+    if (!state && !app.hasAttribute('data-intro')) return;
+    state = 0;
+    listen(false);
+    app.removeAttribute('data-intro');
+    root.classList.remove('ms-lock');
+    box.style.removeProperty('bottom');
+    if (!box.getAttribute('style')) box.removeAttribute('style');
+    anims.forEach(function (a) { try { a.cancel(); } catch (e) { /* already gone */ } });
+    anims = [];
+  }
+  function skip() { if (state === 1) settle(true); else if (state === 2) stop(); }
+
+  /* While the intro runs: wheel, touch and scrolling keys are held; Esc, a click or a tap outside the draft bar skips
+     (during the first 3 s the same entrance runs at about twice the speed; during the entrance it ends at once);
+     a Tab that would leave the draft bar ends it before the browser moves focus, so the header is back in the tab order
+     and focus lands on its first link instead of deep in the page; focus reaching the page any other way ends it too;
+     a hidden tab ends it. */
+  function hush(e) { if (e.cancelable) e.preventDefault(); }
+  function tabStaysInBar(t) {
+    var bar = app.querySelector('.draftbar'), f = bar ? bar.querySelectorAll('button,a[href],input,select,textarea') : [];
+    if (!f.length) return false;
+    if (!t || t === doc.body || t === root) return true;   // nothing focused yet: the first Tab goes to the draft bar
+    return bar.contains(t) && t !== f[f.length - 1];
+  }
+  function onKey(e) {
+    var t = e.target;
+    if (e.key === 'Escape' || e.key === 'Esc') { hush(e); skip(); return; }
+    if (e.key === 'Tab' && !e.shiftKey && !tabStaysInBar(t)) { stop(); return; }
+    if (KEYS.indexOf(e.key) >= 0 && !(t && t.closest && t.closest('a,button,input,select,textarea,[contenteditable]'))) hush(e);
+  }
+  function onClick(e) { var t = e.target; if (!(t && t.closest && t.closest('.draftbar'))) skip(); }
+  function onFocus(e) { var t = e.target; if (t && t.closest && app.contains(t) && !t.closest('.draftbar')) stop(); }   // a keyboard user gets the page at once
+  function onHide() { if (doc.hidden) stop(); }
+  function onScroll() { if (win.pageYOffset) win.scrollTo(0, 0); }   // a dragged scrollbar or a jump the keys did not cover
+  var gk = guard(onKey), gc = guard(onClick), gf = guard(onFocus), gh = guard(onHide), np = { passive: false };
+  function listen(on) {
+    var f = on ? 'addEventListener' : 'removeEventListener';
+    win[f]('wheel', hush, np); win[f]('touchmove', hush, np); win[f]('scroll', onScroll, { passive: true });
+    doc[f]('keydown', gk, true); doc[f]('click', gc, true); doc[f]('focusin', gf, true);
+    doc[f]('visibilitychange', gh);
+  }
+
+  /* why: 'open' (the page has just loaded) and 'pick' (A-3-2 chosen in the draft bar) may start the intro; 'set' and 'view' never do */
+  function sync(why) {
+    if (!active()) { stop(); if (primed) hold(); return; }
+    prime();
+    if (!home()) { stop(); hold(); return; }
+    load();
+    if (why === 'open' || why === 'pick') { stop(); start(); }
+    caption(true);
+    play();
+  }
+  return {
+    sync: guard(sync),
+    lang: guard(function () { capK = -1; caption(true); })
   };
 }
 
@@ -1747,6 +1988,7 @@ function MSFX(app) {
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var timer = null;
   var fx = null;   /* motion layer for A-2 and A-3 (anim.js). Stays null when it is not built in, switched off, or the visitor prefers reduced motion. */
+  var vx = null;   /* A-3-2's first-screen video and its opening intro (video.js). It does nothing unless #app has data-video. */
 
   function save(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* private window */ } }
   function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
@@ -1760,6 +2002,7 @@ function MSFX(app) {
   }
   function startSlides() {
     if (timer) { clearInterval(timer); timer = null; }
+    if (app.hasAttribute('data-video')) return;   // A-3-2: the first screen is the video, and video.js keeps its caption
     var box = hero();
     if (!box) return;
     var imgs = box.querySelectorAll('.slide');
@@ -1782,18 +2025,21 @@ function MSFX(app) {
   /* ---- concept, language, page ---- */
   /* Variants reuse the base concept's markup and rules, plus data-variant overrides.
      'a3' is A-2 again (data-variant="2") with data-clean: no shade at all on the first-screen photo.
-     'a4' is the navy version (data-variant="3"; it was called A-3 until 2026-11-24). */
-  var VAR = { a2: ['2'], a3: ['2', 1], a4: ['3'], b2: ['2'], b3: ['3'], c2: ['2'] };
+     'a4' is the navy version (data-variant="3"; it was called A-3 until 2026-11-24).
+     'a32' is A-3 again with data-video: the home page's first screen plays the campus video (video.js). */
+  var VAR = { a2: ['2'], a3: ['2', 1], a32: ['2', 1, 1], a4: ['3'], b2: ['2'], b3: ['3'], c2: ['2'] };
   function setConcept(c, keep) {
-    if (['a', 'a2', 'a3', 'a4', 'b', 'b2', 'b3', 'c', 'c2'].indexOf(c) < 0) c = 'a';
+    if (['a', 'a2', 'a3', 'a32', 'a4', 'b', 'b2', 'b3', 'c', 'c2'].indexOf(c) < 0) c = 'a';
     app.dataset.concept = c.charAt(0);
     var v = VAR[c];
     if (v) app.setAttribute('data-variant', v[0]); else app.removeAttribute('data-variant');
     if (v && v[1]) app.setAttribute('data-clean', ''); else app.removeAttribute('data-clean');
+    if (v && v[2]) app.setAttribute('data-video', ''); else app.removeAttribute('data-video');
     each('[data-concept-btn]', function (b) { b.setAttribute('aria-pressed', String(b.dataset.conceptBtn === c)); });
     if (keep) save('ms-concept', c);
     startSlides();
     measure(); stuck();
+    if (vx) vx.sync(keep ? 'pick' : 'set');   // before the motion layer, so a starting intro can keep the headline's entrance for its end
     if (fx) fx.sync();
   }
   function setLang(l, keep) {
@@ -1802,7 +2048,8 @@ function MSFX(app) {
     document.documentElement.lang = l;
     if (keep) save('ms-lang', l);
     var box = hero();
-    if (box) caption(box, box.querySelector('.slide.on'));
+    if (box && !app.hasAttribute('data-video')) caption(box, box.querySelector('.slide.on'));
+    if (vx) vx.lang();
     if (fx) fx.lang();
   }
   function closeMenu() {
@@ -1839,6 +2086,7 @@ function MSFX(app) {
     });
     closeMenu();
     window.scrollTo(0, y);
+    if (vx) vx.sync('view');   // back on the home page the video plays on; it never replays the intro
     if (fx) fx.view();
   }
 
@@ -1864,6 +2112,10 @@ function MSFX(app) {
   setLang(load('ms-lang') || app.dataset.lang, false);
   setConcept(load('ms-concept') || 'a', false);
   show(location.hash);
+  if (typeof MSVIDEO === 'function') {
+    vx = MSVIDEO(app, { reduce: reduce, heading: function (play) { return fx ? fx.heading(play) : false; } });
+    if (vx) vx.sync('open');
+  }
   if (typeof MSFX === 'function' && !reduce) { fx = MSFX(app); if (fx) fx.sync(); }
 })();
 
