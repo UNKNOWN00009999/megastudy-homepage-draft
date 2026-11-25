@@ -760,18 +760,23 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
    "[data-concept="a"][data-variant="2"] " / "[data-concept="a"][data-variant="3"] " / "[data-concept="b"][data-variant="2"] " / "[data-concept="b"][data-variant="3"] " / "[data-concept="c"][data-variant="2"] " are expanded by build.py to [data-concept="x"][data-variant="n"] descendant selectors.
    ===================================================================== */
 
-/* ---------- draft bar with ten buttons (A-3-2 added 2026-11-25): one row at every width from 320px up, 48.9px tall as before.
-   As the window narrows, what gives way: the sentence, the button descriptions, "Draft preview ·", the label, then the buttons'
-   side padding. Widths are measured: labels 550.6px with descriptions, 190.6px without; sentence 366.3px (en), 357.2px (ko). ---------- */
-@media (min-width:1101px){#app .seg button{padding-inline:10px}}
-@media (max-width:1239px) and (min-width:1101px),(max-width:939px){.draftbar .what>.en,.draftbar .what>.ko{display:none}}
-@media (max-width:1100px){.seg button i{display:none}}
+/* ---------- draft bar with eleven buttons (A-3-2 added 2026-11-25, A-3-3 Video C 2026-11-26): one row at every width from
+   320px up, 48.9px tall as before. As the window narrows, what gives way: the sentence, the button descriptions,
+   "Draft preview ·", the label, then the buttons' side padding (at 362px and below 1px, with 1px between the buttons).
+   From 1345px the bar's own row runs a little wider than the page (1376px) so the sentence still fits beside the descriptions.
+   Widths are measured: labels 637.5px with descriptions, 225.5px without; "Draft preview · 시안 미리보기" 180.1px, with the
+   sentence 366.3px (en), 357.2px (ko). Every step keeps at least 12px to spare at its narrowest width. ---------- */
+@media (min-width:1345px){.draftbar .wrap{max-width:1376px}}
+@media (min-width:1161px){#app .seg button{padding-inline:10px}}
+@media (max-width:1344px) and (min-width:1161px),(max-width:999px){.draftbar .what>.en,.draftbar .what>.ko{display:none}}
+@media (max-width:1160px){.seg button i{display:none}}
 @media (max-width:820px){.draftbar .what span{display:none}.draftbar .what{white-space:nowrap}.draftbar .in{flex-wrap:nowrap}}
+@media (max-width:715px){.draftbar .what{display:none}.draftbar .in{justify-content:center}}
 @media (max-width:640px){#app .seg button{padding:7px 8px;min-width:34px}}
-@media (max-width:580px){.draftbar .what{display:none}.draftbar .in{justify-content:center}}
-@media (max-width:480px){.draftbar .wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))} #app .seg button{padding:7px 5px;min-width:28px}}
-@media (max-width:400px){#app .seg button{padding:7px 3px;min-width:24px}}
-@media (max-width:350px){.draftbar .wrap{padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))} .seg{gap:2px} #app .seg button{padding:7px 2px;min-width:23px}}
+@media (max-width:525px){.draftbar .wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))} #app .seg button{padding:7px 5px;min-width:28px}}
+@media (max-width:445px){#app .seg button{padding:7px 3px;min-width:24px}}
+@media (max-width:400px){.draftbar .wrap{padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))} .seg{gap:2px} #app .seg button{padding:7px 2px;min-width:23px}}
+@media (max-width:362px){.draftbar .wrap{padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px))} .seg{gap:1px;padding-inline:2px} #app .seg button{padding:7px 1px;min-width:20px}}
 
 /* ---------- fix 1: the language switch stays reachable once the header sticks ---------- */
 /* Wide windows: the utility row stays with the menu row. (In English the menu row has 26–34px to spare, not enough for another button.) */
@@ -889,6 +894,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
    words (.pre-v caption prefix, .cr-v credit lines, .cr-pv notice) out of the page, so they look exactly as before. */
 .a-video{display:none}
 #app:not([data-video]) .pre-v,#app:not([data-video]) .cr-v,#app:not([data-video]) .cr-pv,#app[data-video] .pre-ab,#app[data-video] .cr-p{display:none}
+/* A-3-3 (Video C, data-video="c"): its own credit lines replace A-3-2's; the other concepts hide both (rule above) */
+#app[data-video="c"] .cr-vb,#app:not([data-video="c"]) .cr-vc{display:none}
 #app[data-video] .home-a .hero-media{display:none}
 #app[data-video] .home-a .a-video{display:block;position:absolute;inset:0;z-index:-2;overflow:hidden;background:var(--ink-a)}
 .a-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
@@ -1167,6 +1174,7 @@ html.ms-lock{overscroll-behavior:none}
     <button type="button" data-concept-btn="a2" aria-pressed="false">A-2<i>Soft</i></button>
     <button type="button" data-concept-btn="a3" aria-pressed="false">A-3<i>Clean</i></button>
     <button type="button" data-concept-btn="a32" aria-pressed="false">A-3-2<i>Video</i></button>
+    <button type="button" data-concept-btn="a33" aria-pressed="false">A-3-3<i>Video C</i></button>
     <button type="button" data-concept-btn="a4" aria-pressed="false">A-4<i>Navy</i></button>
     <button type="button" data-concept-btn="b" aria-pressed="false">B<i>Bright</i></button>
     <button type="button" data-concept-btn="b2" aria-pressed="false">B-2<i>Light</i></button>
@@ -1194,7 +1202,7 @@ html.ms-lock{overscroll-behavior:none}
 <main>
 <section class="view" id="v-home" data-v="home"><div class="home-a">
 <section class="a-hero" data-hero>
-  <div class="hero-media" data-slides><img class="slide on" src="img/harvard-widener-dusk-m.jpg" srcset="img/harvard-widener-dusk-m.jpg 1100w, img/harvard-widener-dusk.jpg 2400w" sizes="100vw" alt="Widener Library at Harvard University, lit at dusk in the snow" data-cap-en="Widener Library, Harvard University" data-cap-ko="하버드 대학교 와이드너 도서관" fetchpriority="high" decoding="async"><img class="slide" src="img/yale-harkness-m.jpg" srcset="img/yale-harkness-m.jpg 1100w, img/yale-harkness.jpg 2400w" sizes="100vw" alt="Harkness Tower at Yale University framed by trees" data-cap-en="Harkness Tower, Yale University" data-cap-ko="예일 대학교 하크니스 타워" loading="lazy" decoding="async"><img class="slide" src="img/princeton-blair-m.jpg" srcset="img/princeton-blair-m.jpg 1100w, img/princeton-blair.jpg 2400w" sizes="100vw" alt="Blair Arch at Princeton University" data-cap-en="Blair Arch, Princeton University" data-cap-ko="프린스턴 대학교 블레어 아치" loading="lazy" decoding="async"></div><div class="a-video" aria-hidden="true"><video muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" data-src="media/hero.mp4" data-src-m="media/hero-m.mp4" data-src-v="media/hero-v.mp4" data-src-4k="media/hero-4k.mp4" data-poster="media/hero-poster.jpg" data-poster-v="media/hero-v-poster.jpg" data-cuts="[[0, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;], [3.396, &quot;Harvard University&quot;, &quot;하버드 대학교&quot;], [7.021, &quot;Princeton University&quot;, &quot;프린스턴 대학교&quot;], [10.646, &quot;Columbia University&quot;, &quot;컬럼비아 대학교&quot;], [14.271, &quot;Yale University&quot;, &quot;예일 대학교&quot;], [17.896, &quot;Brown University&quot;, &quot;브라운 대학교&quot;], [21.521, &quot;Dartmouth College&quot;, &quot;다트머스 대학&quot;], [25.146, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;]]"></video></div>
+  <div class="hero-media" data-slides><img class="slide on" src="img/harvard-widener-dusk-m.jpg" srcset="img/harvard-widener-dusk-m.jpg 1100w, img/harvard-widener-dusk.jpg 2400w" sizes="100vw" alt="Widener Library at Harvard University, lit at dusk in the snow" data-cap-en="Widener Library, Harvard University" data-cap-ko="하버드 대학교 와이드너 도서관" fetchpriority="high" decoding="async"><img class="slide" src="img/yale-harkness-m.jpg" srcset="img/yale-harkness-m.jpg 1100w, img/yale-harkness.jpg 2400w" sizes="100vw" alt="Harkness Tower at Yale University framed by trees" data-cap-en="Harkness Tower, Yale University" data-cap-ko="예일 대학교 하크니스 타워" loading="lazy" decoding="async"><img class="slide" src="img/princeton-blair-m.jpg" srcset="img/princeton-blair-m.jpg 1100w, img/princeton-blair.jpg 2400w" sizes="100vw" alt="Blair Arch at Princeton University" data-cap-en="Blair Arch, Princeton University" data-cap-ko="프린스턴 대학교 블레어 아치" loading="lazy" decoding="async"></div><div class="a-video" aria-hidden="true"><video muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" data-src="media/hero.mp4" data-src-m="media/hero-m.mp4" data-src-v="media/hero-v.mp4" data-src-4k="media/hero-4k.mp4" data-poster="media/hero-poster.jpg" data-poster-v="media/hero-v-poster.jpg" data-cuts="[[0, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;], [3.396, &quot;Harvard University&quot;, &quot;하버드 대학교&quot;], [7.021, &quot;Princeton University&quot;, &quot;프린스턴 대학교&quot;], [10.646, &quot;Columbia University&quot;, &quot;컬럼비아 대학교&quot;], [14.271, &quot;Yale University&quot;, &quot;예일 대학교&quot;], [17.896, &quot;Brown University&quot;, &quot;브라운 대학교&quot;], [21.521, &quot;Dartmouth College&quot;, &quot;다트머스 대학&quot;], [25.146, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;]]" data-c-src="media/hero-c.mp4" data-c-src-m="media/hero-c-m.mp4" data-c-src-v="media/hero-c-v.mp4" data-c-src-4k="media/hero-c-4k.mp4" data-c-poster="media/hero-c-poster.jpg" data-c-poster-v="media/hero-c-v-poster.jpg" data-c-cuts="[[0, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;], [3.396, &quot;Harvard University&quot;, &quot;하버드 대학교&quot;], [7.021, &quot;Princeton University&quot;, &quot;프린스턴 대학교&quot;], [10.646, &quot;Columbia University&quot;, &quot;컬럼비아 대학교&quot;], [14.271, &quot;Yale University&quot;, &quot;예일 대학교&quot;], [17.896, &quot;Brown University&quot;, &quot;브라운 대학교&quot;], [21.521, &quot;Dartmouth College&quot;, &quot;다트머스 대학&quot;], [25.146, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;]]"></video></div>
   <div class="wrap a-hero-in">
     <p class="eyebrow rise"><span class="en">Cypress, California · Since 2003</span><span class="ko">캘리포니아 사이프러스 · Since 2003</span></p>
     <h1 class="rise d1">Your Path to College Starts Here.</h1>
@@ -1389,7 +1397,7 @@ html.ms-lock{overscroll-behavior:none}
 <div class="ft-bot">
   <p>© <span class="en">Megastudy Academy</span><span class="ko">메가스터디 아카데미</span> · 5721 Lincoln Ave., Suite G, Cypress, CA 90630 · <a class="nw" href="tel:+17147615656">(714) 761-5656</a></p>
   <p><span class="cr-p"><span class="en">Campus photographs are shown for illustration. Megastudy Academy is not affiliated with or endorsed by the universities pictured.</span><span class="ko">캠퍼스 사진은 이해를 돕기 위한 것입니다. 메가스터디 아카데미는 사진 속 대학과 제휴하거나 그 대학의 보증을 받은 기관이 아닙니다.</span></span><span class="cr-pv"><span class="en">Campus photographs and video are shown for illustration. Megastudy Academy is not affiliated with or endorsed by the universities pictured.</span><span class="ko">캠퍼스 사진과 영상은 이해를 돕기 위한 것입니다. 메가스터디 아카데미는 사진·영상 속 대학과 제휴하거나 그 대학의 보증을 받은 기관이 아닙니다.</span></span></p>
-  <details class="credits"><summary><span class="cr-p"><span class="en">Photo credits</span><span class="ko">사진 출처</span></span><span class="cr-pv"><span class="en">Photo &amp; video credits</span><span class="ko">사진·영상 출처</span></span></summary><ul><li>Widener Library, Harvard University: Chris Rycroft, CC BY 2.0, <a href="https://commons.wikimedia.org/wiki/File:Widener_Library_in_Harvard_Yard_during_a_snowstorm_(51306825311).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Harkness Tower, Yale University: Carol M. Highsmith, Public domain, <a href="https://commons.wikimedia.org/wiki/File:Harkness_Tower_Canopy_Highsmith.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Blair Arch, Princeton University: ajay_suresh, CC BY 4.0, <a href="https://commons.wikimedia.org/wiki/File:Blair_Arch_-_Princeton_University_(55144762843).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Nassau Hall, Princeton University: ajay_suresh, CC BY 4.0, <a href="https://commons.wikimedia.org/wiki/File:Nassau_Hall_-_Princeton_University_(55144981395).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Widener Library, Harvard University: Kenneth C. Zirkel, CC BY 4.0, <a href="https://commons.wikimedia.org/wiki/File:Widener_Library,_Harvard_University.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Baker Library, Dartmouth College: Kane5187, Public domain, <a href="https://commons.wikimedia.org/wiki/File:Dartmouth_College_campus_2007-06-23_Baker_Memorial_Library_01.JPG" target="_blank" rel="noopener">Wikimedia Commons</a></li><li class="cr-v cr-vh"><span class="en">First-screen video, edited from these sources:</span><span class="ko">첫 화면 영상(아래 자료를 편집해 만들었습니다):</span></li><li class="cr-v"><span class="en">Cornell University</span><span class="ko">코넬 대학교</span>: “Cornell University. Ithaca, NY”<span class="en"> by </span><span class="ko">, </span>JohnFilms Production, <a href="https://www.youtube.com/watch?v=6n9C5sN081g" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v"><span class="en">Harvard University</span><span class="ko">하버드 대학교</span>: “哈佛大学校园第一人称 Harvard University campus POV”<span class="en"> by </span><span class="ko">, </span>howchou, <a href="https://www.youtube.com/watch?v=zTm07p-lGyk" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v"><span class="en">Princeton University</span><span class="ko">프린스턴 대학교</span>: “Inside Princeton: America's Most Beautiful College Town”<span class="en"> by </span><span class="ko">, </span>Bogdan and Nastya, <a href="https://www.youtube.com/watch?v=TG8GNt_kUQU" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v"><span class="en">Columbia University</span><span class="ko">컬럼비아 대학교</span>: “Low Angle Shot of University Campus”<span class="en"> by </span><span class="ko">, </span>Armin Rimoldi, <a href="https://www.pexels.com/video/5551777/" target="_blank" rel="noopener">Pexels</a>, <a href="https://www.pexels.com/license/" target="_blank" rel="noopener">Pexels License</a></li><li class="cr-v"><span class="en">Yale University</span><span class="ko">예일 대학교</span>: “[4K] WALK - Walk around Yale University (The shops at Yale at Broadway)”<span class="en"> by </span><span class="ko">, </span>Let's Go Walking Tour, <a href="https://www.youtube.com/watch?v=kjL965eVucE" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v"><span class="en">Brown University (still photo)</span><span class="ko">브라운 대학교(사진)</span>: “Brown University - Main Campus 02”<span class="en"> by </span><span class="ko">, </span>P. Hughes, <a href="https://commons.wikimedia.org/wiki/File:Brown_University_-_Main_Campus_02.jpg" target="_blank" rel="noopener">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></li><li class="cr-v"><span class="en">Dartmouth College</span><span class="ko">다트머스 대학</span>: “Dartmouth College Baker Tower aerial”<span class="en"> by </span><span class="ko">, </span>Jared, <a href="https://www.youtube.com/watch?v=aUlinI6EPlg" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v"><span class="en">Changes: the clips were trimmed, cropped and joined, and their speed, framing, camera shake and color were adjusted. The Brown University photo was cropped, softened with light grain and given a slow zoom.</span><span class="ko">고친 내용: 영상을 잘라 이어 붙이고 화면 범위·속도·흔들림·색을 손봤습니다. 브라운 대학교 사진은 잘라 내고 살짝 흐리게 하고 옅은 입자감을 더한 뒤 천천히 확대되게 만들었습니다.</span></li></ul></details>
+  <details class="credits"><summary><span class="cr-p"><span class="en">Photo credits</span><span class="ko">사진 출처</span></span><span class="cr-pv"><span class="en">Photo &amp; video credits</span><span class="ko">사진·영상 출처</span></span></summary><ul><li>Widener Library, Harvard University: Chris Rycroft, CC BY 2.0, <a href="https://commons.wikimedia.org/wiki/File:Widener_Library_in_Harvard_Yard_during_a_snowstorm_(51306825311).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Harkness Tower, Yale University: Carol M. Highsmith, Public domain, <a href="https://commons.wikimedia.org/wiki/File:Harkness_Tower_Canopy_Highsmith.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Blair Arch, Princeton University: ajay_suresh, CC BY 4.0, <a href="https://commons.wikimedia.org/wiki/File:Blair_Arch_-_Princeton_University_(55144762843).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Nassau Hall, Princeton University: ajay_suresh, CC BY 4.0, <a href="https://commons.wikimedia.org/wiki/File:Nassau_Hall_-_Princeton_University_(55144981395).jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Widener Library, Harvard University: Kenneth C. Zirkel, CC BY 4.0, <a href="https://commons.wikimedia.org/wiki/File:Widener_Library,_Harvard_University.jpg" target="_blank" rel="noopener">Wikimedia Commons</a></li><li>Baker Library, Dartmouth College: Kane5187, Public domain, <a href="https://commons.wikimedia.org/wiki/File:Dartmouth_College_campus_2007-06-23_Baker_Memorial_Library_01.JPG" target="_blank" rel="noopener">Wikimedia Commons</a></li><li class="cr-v cr-vh"><span class="en">First-screen video, edited from these sources:</span><span class="ko">첫 화면 영상(아래 자료를 편집해 만들었습니다):</span></li><li class="cr-v cr-vb"><span class="en">Cornell University</span><span class="ko">코넬 대학교</span>: “Cornell University. Ithaca, NY”<span class="en"> by </span><span class="ko">, </span>JohnFilms Production, <a href="https://www.youtube.com/watch?v=6n9C5sN081g" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v cr-vb"><span class="en">Harvard University</span><span class="ko">하버드 대학교</span>: “哈佛大学校园第一人称 Harvard University campus POV”<span class="en"> by </span><span class="ko">, </span>howchou, <a href="https://www.youtube.com/watch?v=zTm07p-lGyk" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v cr-vb"><span class="en">Princeton University</span><span class="ko">프린스턴 대학교</span>: “Inside Princeton: America's Most Beautiful College Town”<span class="en"> by </span><span class="ko">, </span>Bogdan and Nastya, <a href="https://www.youtube.com/watch?v=TG8GNt_kUQU" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v cr-vb"><span class="en">Columbia University</span><span class="ko">컬럼비아 대학교</span>: “Low Angle Shot of University Campus”<span class="en"> by </span><span class="ko">, </span>Armin Rimoldi, <a href="https://www.pexels.com/video/5551777/" target="_blank" rel="noopener">Pexels</a>, <a href="https://www.pexels.com/license/" target="_blank" rel="noopener">Pexels License</a></li><li class="cr-v cr-vb"><span class="en">Yale University</span><span class="ko">예일 대학교</span>: “[4K] WALK - Walk around Yale University (The shops at Yale at Broadway)”<span class="en"> by </span><span class="ko">, </span>Let's Go Walking Tour, <a href="https://www.youtube.com/watch?v=kjL965eVucE" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v cr-vb"><span class="en">Brown University (still photo)</span><span class="ko">브라운 대학교(사진)</span>: “Brown University - Main Campus 02”<span class="en"> by </span><span class="ko">, </span>P. Hughes, <a href="https://commons.wikimedia.org/wiki/File:Brown_University_-_Main_Campus_02.jpg" target="_blank" rel="noopener">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></li><li class="cr-v cr-vb"><span class="en">Dartmouth College</span><span class="ko">다트머스 대학</span>: “Dartmouth College Baker Tower aerial”<span class="en"> by </span><span class="ko">, </span>Jared, <a href="https://www.youtube.com/watch?v=aUlinI6EPlg" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v cr-vc"><span class="en">Cornell University</span><span class="ko">코넬 대학교</span>: “Flight Over To Cornell From South Hill”<span class="en"> by </span><span class="ko">, </span>k!ng fr!day, <a href="https://www.youtube.com/watch?v=sSARxg5soAA" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v cr-vc"><span class="en">Harvard University</span><span class="ko">하버드 대학교</span>: “哈佛大学校园第一人称 Harvard University campus POV”<span class="en"> by </span><span class="ko">, </span>howchou, <a href="https://www.youtube.com/watch?v=zTm07p-lGyk" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v cr-vc"><span class="en">Princeton University</span><span class="ko">프린스턴 대학교</span>: “普林斯顿校园第一人称 Princeton University campus POV”<span class="en"> by </span><span class="ko">, </span>howchou, <a href="https://www.youtube.com/watch?v=cBPhio_mDl4" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v cr-vc"><span class="en">Columbia University</span><span class="ko">컬럼비아 대학교</span>: “Low Angle Shot of University Campus”<span class="en"> by </span><span class="ko">, </span>Armin Rimoldi, <a href="https://www.pexels.com/video/5551777/" target="_blank" rel="noopener">Pexels</a>, <a href="https://www.pexels.com/license/" target="_blank" rel="noopener">Pexels License</a></li><li class="cr-v cr-vc"><span class="en">Yale University</span><span class="ko">예일 대학교</span>: “[4K] WALK - Walk around Yale University (The shops at Yale at Broadway)”<span class="en"> by </span><span class="ko">, </span>Let's Go Walking Tour, <a href="https://www.youtube.com/watch?v=kjL965eVucE" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v cr-vc"><span class="en">Brown University (still photo)</span><span class="ko">브라운 대학교(사진)</span>: “The iconic Van Wickle Gates at Brown University … (wide)”<span class="en"> by </span><span class="ko">, </span>Carol M. Highsmith (Library of Congress), <a href="https://commons.wikimedia.org/wiki/File:The_iconic_Van_Wickle_Gates_at_Brown_University,_one_of_America%27s_prestigious_%22Ivy_League%22_colleges,_in_Providence,_the_capital_of,_and_largest_city_in,_Rhode_Island_(wide).jpg" target="_blank" rel="noopener">Wikimedia Commons</a>, <a href="https://commons.wikimedia.org/wiki/Template:PD-Highsmith" target="_blank" rel="noopener">Public domain</a></li><li class="cr-v cr-vc"><span class="en">Dartmouth College</span><span class="ko">다트머스 대학</span>: “Dartmouth College Baker Tower aerial”<span class="en"> by </span><span class="ko">, </span>Jared, <a href="https://www.youtube.com/watch?v=aUlinI6EPlg" target="_blank" rel="noopener">YouTube</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a></li><li class="cr-v"><span class="en">Changes: the clips were trimmed, cropped and joined, and their speed, framing, camera shake and color were adjusted. The Brown University photo was cropped, softened with light grain and given a slow zoom.</span><span class="ko">고친 내용: 영상을 잘라 이어 붙이고 화면 범위·속도·흔들림·색을 손봤습니다. 브라운 대학교 사진은 잘라 내고 살짝 흐리게 하고 옅은 입자감을 더한 뒤 천천히 확대되게 만들었습니다.</span></li></ul></details>
 </div>
 </div></footer>
 </div>
@@ -1822,7 +1830,11 @@ function MSFX(app) {
    poster follows the same rule, and turning the phone swaps the file at the same moment of the loop (once the intro is
    over, if one is running).
    If the 4K file fails (missing, as in the artifact copy, or a device that cannot play it), the 1080p file takes over at
-   once, at the same moment, and plays on (the home page of A-3-2 only); the page then keeps to 1080p. */
+   once, at the same moment, and plays on (the home page of A-3-2 only); the page then keeps to 1080p.
+   A-3-3 (Video C) sets data-video="c": the same element then reads the data-c-* addresses (video C, the same timing).
+   Choosing the other one in the draft bar swaps the file the way a turn of the phone does, and, as with any pick in the
+   draft bar, the intro runs again from the first frame. The 4K rule and the fall back to 1080p are the same for both
+   (one failed 4K file keeps both videos at 1080p). */
 function MSVIDEO(app, opt) {
   var box = app.querySelector('.home-a .a-video'), vid = box && box.querySelector('video');
   if (!box || !vid) return null;
@@ -1831,9 +1843,14 @@ function MSVIDEO(app, opt) {
   var reduce = !!opt.reduce, introOff = /[?&]intro=off\b/.test(location.search);
   var KEYS = [' ', 'Spacebar', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End'];
   var cuts = [], primed = false, loaded = false, state = 0, timers = [], anims = [], capK = -1, retrying = false;
+  var cutsC = [], vset = '';
   try { cuts = JSON.parse(vid.getAttribute('data-cuts') || '[]'); } catch (e) { cuts = []; }
+  try { cutsC = JSON.parse(vid.getAttribute('data-c-cuts') || '[]'); } catch (e) { cutsC = []; }
 
   function active() { return app.hasAttribute('data-video'); }
+  function set() { return app.getAttribute('data-video') === 'c' ? 'c-' : ''; }   // which video: '' = A-3-2, 'c-' = A-3-3 (Video C)
+  function at(n) { return vid.getAttribute('data-' + set() + n) || ''; }
+  function cutList() { return set() && cutsC.length ? cutsC : cuts; }
   function home() { return (app.dataset.view || 'home') === 'home'; }
   function guard(f) { return function (a) { try { f(a); } catch (e) { try { stop(); } catch (e2) { /* nothing left to undo */ } } }; }
   function later(f, ms) {
@@ -1855,11 +1872,11 @@ function MSVIDEO(app, opt) {
   function big() {
     var c = navigator.connection, r = box.getBoundingClientRect().width, w = r * (win.devicePixelRatio || 1);
     if (noK || !c || c.saveData || c.effectiveType !== '4g' || !(c.downlink >= 10)) return false;   // noK: the 4K file failed once
-    return r >= 1000 && w > 2200 && !!vid.getAttribute('data-src-4k');
+    return r >= 1000 && w > 2200 && !!at('src-4k');
   }
   function which() { return win.matchMedia(MQV).matches ? 'v' : win.matchMedia(MQ).matches ? 'm' : big() ? 'k' : ''; }
-  function srcOf(k) { return (k === 'v' && vid.getAttribute('data-src-v')) || ((k === 'v' || k === 'm') && vid.getAttribute('data-src-m')) || (k === 'k' && vid.getAttribute('data-src-4k')) || vid.getAttribute('data-src'); }
-  function posterOf(k) { return (k === 'v' && vid.getAttribute('data-poster-v')) || vid.getAttribute('data-poster'); }
+  function srcOf(k) { return (k === 'v' && at('src-v')) || ((k === 'v' || k === 'm') && at('src-m')) || (k === 'k' && at('src-4k')) || at('src'); }
+  function posterOf(k) { return (k === 'v' && at('poster-v')) || at('poster'); }
   function mark() { if (kind === 'v') vid.setAttribute('data-upright', ''); else vid.removeAttribute('data-upright'); }   // site.css anchors the upright cut near its top
   function prime() {   // A-3-2 chosen: the element's settings, no file yet
     if (primed) return;
@@ -1877,6 +1894,7 @@ function MSVIDEO(app, opt) {
     if (loaded) return;
     loaded = true;
     kind = which();
+    vset = set();
     mark();
     vid.poster = posterOf(kind);
     if (reduce) return;   // the poster stands still and the file is never fetched
@@ -1889,7 +1907,7 @@ function MSVIDEO(app, opt) {
      of sight (another concept, another page) it waits until the home page shows again (sync()). */
   function onTurn() { clearTimeout(turnT); turnT = setTimeout(guard(fit), 200); }   // a turn fires several resizes: act once it has settled
   function fit() {
-    if (!loaded || which() === kind) { pend = false; return; }
+    if (!loaded || (which() === kind && set() === vset)) { pend = false; return; }
     if (state || !active() || !home()) { pend = true; return; }
     pend = false;
     swap();
@@ -1897,6 +1915,7 @@ function MSVIDEO(app, opt) {
   function swap() {
     var s;
     kind = which();
+    vset = set();
     mark();
     vid.poster = posterOf(kind);
     s = srcOf(kind);
@@ -1914,6 +1933,7 @@ function MSVIDEO(app, opt) {
     noK = true;
     var b = back || { t: vid.currentTime || 0, run: true };
     kind = '';
+    vset = set();
     back = b;
     vid.autoplay = false;   // resume() starts it, at that moment
     vid.src = srcOf(kind);
@@ -1946,14 +1966,15 @@ function MSVIDEO(app, opt) {
   }
 
   /* ---- the line at the foot of the first screen names the campus on screen, as it named the photo before ---- */
-  function cutAt(t) { var k = 0; for (var i = 1; i < cuts.length; i++) if (t >= cuts[i][0]) k = i; return k; }
+  function cutAt(t) { var c = cutList(), k = 0; for (var i = 1; i < c.length; i++) if (t >= c[i][0]) k = i; return k; }
   function caption(force) {
-    if (!active() || !cuts.length || (back && force !== true)) return;   // back: a swapped-in file, not at its moment yet
+    var list = cutList();
+    if (!active() || !list.length || (back && force !== true)) return;   // back: a swapped-in file, not at its moment yet
     var k = cutAt(vid.currentTime || 0), out;
     if (k === capK && force !== true) return;
     capK = k;
     out = app.querySelector('.home-a [data-cap-out]');
-    if (out) out.textContent = cuts[k][app.dataset.lang === 'ko' ? 2 : 1];
+    if (out) out.textContent = list[k][app.dataset.lang === 'ko' ? 2 : 1];
   }
 
   /* ---- the intro ---- */
@@ -2112,15 +2133,16 @@ function MSVIDEO(app, opt) {
   /* Variants reuse the base concept's markup and rules, plus data-variant overrides.
      'a3' is A-2 again (data-variant="2") with data-clean: no shade at all on the first-screen photo.
      'a4' is the navy version (data-variant="3"; it was called A-3 until 2026-11-24).
-     'a32' is A-3 again with data-video: the home page's first screen plays the campus video (video.js). */
-  var VAR = { a2: ['2'], a3: ['2', 1], a32: ['2', 1, 1], a4: ['3'], b2: ['2'], b3: ['3'], c2: ['2'] };
+     'a32' is A-3 again with data-video: the home page's first screen plays the campus video (video.js).
+     'a33' is A-3-2 with data-video="c": the same first screen plays video C (all-4K sources, same schools, order and timing). */
+  var VAR = { a2: ['2'], a3: ['2', 1], a32: ['2', 1, 1], a33: ['2', 1, 1, 'c'], a4: ['3'], b2: ['2'], b3: ['3'], c2: ['2'] };
   function setConcept(c, keep) {
-    if (['a', 'a2', 'a3', 'a32', 'a4', 'b', 'b2', 'b3', 'c', 'c2'].indexOf(c) < 0) c = 'a';
+    if (['a', 'a2', 'a3', 'a32', 'a33', 'a4', 'b', 'b2', 'b3', 'c', 'c2'].indexOf(c) < 0) c = 'a';
     app.dataset.concept = c.charAt(0);
     var v = VAR[c];
     if (v) app.setAttribute('data-variant', v[0]); else app.removeAttribute('data-variant');
     if (v && v[1]) app.setAttribute('data-clean', ''); else app.removeAttribute('data-clean');
-    if (v && v[2]) app.setAttribute('data-video', ''); else app.removeAttribute('data-video');
+    if (v && v[2]) app.setAttribute('data-video', v[3] || ''); else app.removeAttribute('data-video');
     each('[data-concept-btn]', function (b) { b.setAttribute('aria-pressed', String(b.dataset.conceptBtn === c)); });
     if (keep) save('ms-concept', c);
     startSlides();
