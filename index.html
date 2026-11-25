@@ -1194,7 +1194,7 @@ html.ms-lock{overscroll-behavior:none}
 <main>
 <section class="view" id="v-home" data-v="home"><div class="home-a">
 <section class="a-hero" data-hero>
-  <div class="hero-media" data-slides><img class="slide on" src="img/harvard-widener-dusk-m.jpg" srcset="img/harvard-widener-dusk-m.jpg 1100w, img/harvard-widener-dusk.jpg 2400w" sizes="100vw" alt="Widener Library at Harvard University, lit at dusk in the snow" data-cap-en="Widener Library, Harvard University" data-cap-ko="하버드 대학교 와이드너 도서관" fetchpriority="high" decoding="async"><img class="slide" src="img/yale-harkness-m.jpg" srcset="img/yale-harkness-m.jpg 1100w, img/yale-harkness.jpg 2400w" sizes="100vw" alt="Harkness Tower at Yale University framed by trees" data-cap-en="Harkness Tower, Yale University" data-cap-ko="예일 대학교 하크니스 타워" loading="lazy" decoding="async"><img class="slide" src="img/princeton-blair-m.jpg" srcset="img/princeton-blair-m.jpg 1100w, img/princeton-blair.jpg 2400w" sizes="100vw" alt="Blair Arch at Princeton University" data-cap-en="Blair Arch, Princeton University" data-cap-ko="프린스턴 대학교 블레어 아치" loading="lazy" decoding="async"></div><div class="a-video" aria-hidden="true"><video muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" data-src="media/hero.mp4" data-src-m="media/hero-m.mp4" data-src-v="media/hero-v.mp4" data-poster="media/hero-poster.jpg" data-poster-v="media/hero-v-poster.jpg" data-cuts="[[0, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;], [3.396, &quot;Harvard University&quot;, &quot;하버드 대학교&quot;], [7.021, &quot;Princeton University&quot;, &quot;프린스턴 대학교&quot;], [10.646, &quot;Columbia University&quot;, &quot;컬럼비아 대학교&quot;], [14.271, &quot;Yale University&quot;, &quot;예일 대학교&quot;], [17.896, &quot;Brown University&quot;, &quot;브라운 대학교&quot;], [21.521, &quot;Dartmouth College&quot;, &quot;다트머스 대학&quot;], [25.146, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;]]"></video></div>
+  <div class="hero-media" data-slides><img class="slide on" src="img/harvard-widener-dusk-m.jpg" srcset="img/harvard-widener-dusk-m.jpg 1100w, img/harvard-widener-dusk.jpg 2400w" sizes="100vw" alt="Widener Library at Harvard University, lit at dusk in the snow" data-cap-en="Widener Library, Harvard University" data-cap-ko="하버드 대학교 와이드너 도서관" fetchpriority="high" decoding="async"><img class="slide" src="img/yale-harkness-m.jpg" srcset="img/yale-harkness-m.jpg 1100w, img/yale-harkness.jpg 2400w" sizes="100vw" alt="Harkness Tower at Yale University framed by trees" data-cap-en="Harkness Tower, Yale University" data-cap-ko="예일 대학교 하크니스 타워" loading="lazy" decoding="async"><img class="slide" src="img/princeton-blair-m.jpg" srcset="img/princeton-blair-m.jpg 1100w, img/princeton-blair.jpg 2400w" sizes="100vw" alt="Blair Arch at Princeton University" data-cap-en="Blair Arch, Princeton University" data-cap-ko="프린스턴 대학교 블레어 아치" loading="lazy" decoding="async"></div><div class="a-video" aria-hidden="true"><video muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" data-src="media/hero.mp4" data-src-m="media/hero-m.mp4" data-src-v="media/hero-v.mp4" data-src-4k="media/hero-4k.mp4" data-poster="media/hero-poster.jpg" data-poster-v="media/hero-v-poster.jpg" data-cuts="[[0, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;], [3.396, &quot;Harvard University&quot;, &quot;하버드 대학교&quot;], [7.021, &quot;Princeton University&quot;, &quot;프린스턴 대학교&quot;], [10.646, &quot;Columbia University&quot;, &quot;컬럼비아 대학교&quot;], [14.271, &quot;Yale University&quot;, &quot;예일 대학교&quot;], [17.896, &quot;Brown University&quot;, &quot;브라운 대학교&quot;], [21.521, &quot;Dartmouth College&quot;, &quot;다트머스 대학&quot;], [25.146, &quot;Cornell University&quot;, &quot;코넬 대학교&quot;]]"></video></div>
   <div class="wrap a-hero-in">
     <p class="eyebrow rise"><span class="en">Cypress, California · Since 2003</span><span class="ko">캘리포니아 사이프러스 · Since 2003</span></p>
     <h1 class="rise d1">Your Path to College Starts Here.</h1>
@@ -1816,9 +1816,13 @@ function MSFX(app) {
    fetches it only once the home page shows (a visitor who lands on another page and stays there does not download it).
    Reduced motion: no intro and no playback, the poster stands still. ?intro=off: no intro. Esc, a click or a tap skips it;
    a Tab into the page ends it at once.
-   Three files share one timeline (frames, cuts, fades): an upright cut for a narrow screen held upright, 720p for a narrow
-   screen held sideways, 1080p above 860px. The poster follows the same rule, and turning the phone swaps the file at the
-   same moment of the loop (once the intro is over, if one is running). */
+   Four files share one timeline (frames, cuts, fades): an upright cut for a narrow screen held upright, 720p for a narrow
+   screen held sideways, 1080p above 860px, and 2160p (4K) when the video box is at least 1000 CSS pixels and more than
+   2200 device pixels wide and the browser reports a fast connection (about 10 Mbps or more) that does not save data. The
+   poster follows the same rule, and turning the phone swaps the file at the same moment of the loop (once the intro is
+   over, if one is running).
+   If the 4K file fails (missing, as in the artifact copy, or a device that cannot play it), the 1080p file takes over at
+   once, at the same moment, and plays on (the home page of A-3-2 only); the page then keeps to 1080p. */
 function MSVIDEO(app, opt) {
   var box = app.querySelector('.home-a .a-video'), vid = box && box.querySelector('video');
   if (!box || !vid) return null;
@@ -1838,13 +1842,23 @@ function MSVIDEO(app, opt) {
   }
 
   /* ---- the video ---- */
-  /* Which file: a narrow screen held upright gets the upright cut (608×1080, each campus framed on its landmark), a narrow
-     screen held sideways the 720p file, anything wider the 1080p file. The poster follows the same rule, so the still that
+  /* Which file: a narrow screen held upright gets the upright cut (1080×1920, each campus framed on its landmark), a narrow
+     screen held sideways the 720p file, anything wider the 1080p file, or the 4K file when big() says so. The poster follows
+     the same rule (the 4K file shares the 1080p poster), so the still that
      reduced motion, a refused autoplay or a slow network leave on screen fits the screen's shape as well. */
   var MQ = '(max-width:860px)', MQV = MQ + ' and (orientation: portrait)';
-  var kind = '', pend = false, back = null, turnT = 0;
-  function which() { return win.matchMedia(MQV).matches ? 'v' : win.matchMedia(MQ).matches ? 'm' : ''; }
-  function srcOf(k) { return (k === 'v' && vid.getAttribute('data-src-v')) || (k && vid.getAttribute('data-src-m')) || vid.getAttribute('data-src'); }
+  var kind = '', pend = false, back = null, turnT = 0, noK = false;
+  /* 4K only where it can show and the line can carry it: the box is at least 1000 CSS pixels and more than 2200 device
+     pixels wide (a phone held sideways is narrower in CSS pixels, and its small screen gains nothing from 4K), and the
+     browser reports a fast connection that does not ask to save data (4G class with an estimated downlink of 10 Mbps, the
+     most Chrome and Edge ever report). Safari and Firefox report no connection (navigator.connection is missing), so they keep 1080p. */
+  function big() {
+    var c = navigator.connection, r = box.getBoundingClientRect().width, w = r * (win.devicePixelRatio || 1);
+    if (noK || !c || c.saveData || c.effectiveType !== '4g' || !(c.downlink >= 10)) return false;   // noK: the 4K file failed once
+    return r >= 1000 && w > 2200 && !!vid.getAttribute('data-src-4k');
+  }
+  function which() { return win.matchMedia(MQV).matches ? 'v' : win.matchMedia(MQ).matches ? 'm' : big() ? 'k' : ''; }
+  function srcOf(k) { return (k === 'v' && vid.getAttribute('data-src-v')) || ((k === 'v' || k === 'm') && vid.getAttribute('data-src-m')) || (k === 'k' && vid.getAttribute('data-src-4k')) || vid.getAttribute('data-src'); }
   function posterOf(k) { return (k === 'v' && vid.getAttribute('data-poster-v')) || vid.getAttribute('data-poster'); }
   function mark() { if (kind === 'v') vid.setAttribute('data-upright', ''); else vid.removeAttribute('data-upright'); }   // site.css anchors the upright cut near its top
   function prime() {   // A-3-2 chosen: the element's settings, no file yet
@@ -1853,7 +1867,7 @@ function MSVIDEO(app, opt) {
     vid.muted = true; vid.defaultMuted = true; vid.loop = true; vid.playsInline = true;
     vid.addEventListener('timeupdate', caption);
     vid.addEventListener('loadedmetadata', guard(resume));
-    vid.addEventListener('error', function () { back = null; });
+    vid.addEventListener('error', guard(fail));
     [MQ, MQV].forEach(function (q) {
       var m = win.matchMedia(q);
       if (m.addEventListener) m.addEventListener('change', onTurn); else if (m.addListener) m.addListener(onTurn);
@@ -1890,6 +1904,19 @@ function MSVIDEO(app, opt) {
     if (!back) back = { t: vid.currentTime || 0, run: !vid.paused };   // a second turn before the new file is ready keeps the first moment
     vid.autoplay = false;   // resume() starts it, at that moment
     vid.src = s;
+  }
+  /* A file failed. The 4K file gives way to the 1080p file for good, at the moment it had reached (a moment kept from a
+     turn still pending wins, with its playing or stopped state). Otherwise it plays on: the page keeps the video running
+     whenever it is on screen, and a failed file already reads as paused here, so its state cannot be asked. resume() does
+     the rest once the 1080p file knows its length, and plays only on the home page of A-3-2. Any other failure leaves the poster. */
+  function fail() {
+    if (kind !== 'k') { back = null; return; }
+    noK = true;
+    var b = back || { t: vid.currentTime || 0, run: true };
+    kind = '';
+    back = b;
+    vid.autoplay = false;   // resume() starts it, at that moment
+    vid.src = srcOf(kind);
   }
   function resume() {  // the swapped-in file knows its length: go to the moment, then play on
     var b = back;
